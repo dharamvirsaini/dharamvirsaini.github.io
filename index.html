@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>TokBox Client App</title>
+    </head>
+    <body>
+        <button id="a"  style="height:200px;width:200px" type="submit" onclick="Device1()">Reverse Camera</button>
+        <p id = "device_id"> </p>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+        <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
+        <script charset="utf-8">
+            var session =null;
+            var publisher=null;
+            var videoInputDevices;
+            var mdeviceId = [];
+          
+            OT.getDevices(function(error, devices) {
+                          videoInputDevices = devices.filter(function(element) {
+                                                             return element.kind == "videoInput";
+                                                             });
+                          document.getElementById("device_id").innerHTML = videoInputDevices.length;
+
+                          for (i = 0; i < videoInputDevices.length; i++) {
+
+                          mdeviceId.push(videoInputDevices[i].deviceId);
+
+                          console.log("video input device: ", videoInputDevices[i].deviceId);
+
+                          }
+
+                          });
+                          var Device1 = function(){
+                              document.getElementById("a").setAttribute( "onClick", "javascript: Device2();" );
+                              document.getElementById("device_id").innerHTML = "device id 1 is " + mdeviceId[0];
+                              publishStream1();
+                              //alert("Device1");
+
+                          }
+
+
+
+        var Device2 = function(){
+            document.getElementById("a").setAttribute( "onClick", "javascript: Device1();" );
+            document.getElementById("device_id").innerHTML = "device id 2 is " + mdeviceId[1];
+            publishStream2();
+            //alert("Device2");
+        }
+
+
+
+        function publishStream1(){
+            var msessionId="1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg";
+            var mtoken="T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9YTRiYmUwYjBkZjVjYTMyZmEwZmRjODY0MzhmMTMyYzM1ZmQ3MmEzODpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTNPVGd3T1RVeE16azFObjVOYzFaTVVGZDBRMG96WTFRMk1VOW9VbE5pYTNkT2NHcC1mZyZjcmVhdGVfdGltZT0xNDc5ODA5NTQ0Jm5vbmNlPTAuODgyNjQ2OTY5MDc0MDAyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDgyNDAxNTQz";
+            console.log("Start Publishing"+msessionId + "device id is " + mdeviceId[0]);
+            var apiKey = "45302582"; // Replace with your API key.
+            if(session!=null){
+                session.unpublish(publisher);
+                //session.unpublish(publisher);
+                publisher.destroy();
+                publisher =void 0;
+                var publisherProperties = {fitMode: 'contain'};
+                publisher = OT.initPublisher('local-media', publisherProperties);
+                session.publish(publisher);
+            }else{
+                session = OT.initSession(apiKey, msessionId)
+                .on('streamCreated', function(event) {
+                    session.subscribe(event.stream);
+                    }).connect(mtoken, function(error) {
+                               //console.log("video input device: ", mdeviceId1);
+                               var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[0]};
+                               publisher = OT.initPublisher('local-media', publisherProperties);
+                               session.publish(publisher);
+                               });
+            }
+        }
+
+
+
+        function publishStream2(){
+            if(session!=null){
+                session.unpublish(publisher);
+                publisher.destroy();
+                var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
+                publisher = OT.initPublisher('local-media', publisherProperties);
+                session.publish(publisher);
+                publisher =void 0;
+            }
+        }
+
+            </script>
+
+    </body>
+
+</html>
