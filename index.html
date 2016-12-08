@@ -55,7 +55,7 @@
             if(session!=null){
                 session.unpublish(publisher);
                 //session.unpublish(publisher);
-                publisher.destroy();
+               // publisher.destroy();
                 publisher =void 0;
                 var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[0]};
                 publisher = OT.initPublisher('local-media', publisherProperties);
