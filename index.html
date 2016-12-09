@@ -12,7 +12,7 @@
     return acc.kind === "videoinput";
     }, {});
     constraints = { video: { deviceId: devices[0].deviceId} };
-    
+
 function reverseCamera()
 {
   constraints = { video: { deviceId: devices[1].deviceId} };
@@ -38,10 +38,10 @@ function reverseCamera()
     }
 
 
-      var apiKey = '45644842';
-      var sessionId = '2_MX40NTY0NDg0Mn5-MTQ3MjgzMjg0MDA1Nn4yQi9ZVkNzOHc2azJVSElVODhPOTNLWmh-fg';
-      var token = 'T1==cGFydG5lcl9pZD00NTY0NDg0MiZzaWc9NmFiMGYzMWQzMTBlYTVkMmRmNjYyNDUyZGUwZTBjNWU3OGJiNmY3NzpzZXNzaW9uX2lkPTJfTVg0ME5UWTBORGcwTW41LU1UUTNNamd6TWpnME1EQTFObjR5UWk5WlZrTnpPSGMyYXpKVlNFbFZPRGhQT1ROTFdtaC1mZyZjcmVhdGVfdGltZT0xNDcyODMyODg1Jm5vbmNlPTAuMjU2NDE3MTEwNTYyMzI0NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDczNDM3Njg1';
-      var session = OT.initSession(apiKey, sessionId)
+    apiKey = '45302582';
+    sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
+    token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9YTRiYmUwYjBkZjVjYTMyZmEwZmRjODY0MzhmMTMyYzM1ZmQ3MmEzODpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTNPVGd3T1RVeE16azFObjVOYzFaTVVGZDBRMG96WTFRMk1VOW9VbE5pYTNkT2NHcC1mZyZjcmVhdGVfdGltZT0xNDc5ODA5NTQ0Jm5vbmNlPTAuODgyNjQ2OTY5MDc0MDAyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDgyNDAxNTQz';
+  var session = OT.initSession(apiKey, sessionId)
         .on('streamCreated', function(event) {
           session.subscribe(event.stream);
         })
