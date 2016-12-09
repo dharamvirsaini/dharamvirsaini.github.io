@@ -24,8 +24,8 @@ var mdeviceId = [];
   }
 
 });
-console.log(mdeviceId);
-    constraints = { video: { deviceId: mdeviceId[0]} };
+console.log("deviceID" + mdeviceId);
+    constraints = { video: { deviceId: mdeviceId[1]} };
 
 function reverseCamera()
 {
@@ -45,7 +45,7 @@ function reverseCamera()
 
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
             video.src = window.URL.createObjectURL(stream);
             video.play();
         });
