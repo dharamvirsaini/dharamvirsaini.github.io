@@ -10,6 +10,7 @@
 var inputDevices;
 var mdeviceId = [];
 var publisher=null;
+var session;
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
     inputDevices = devices.filter(function(acc) {
@@ -30,14 +31,10 @@ console.log("deviceID" + mdeviceId);
 
 function reverseCamera()
 {
+  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
+  publisher = OT.initPublisher('local-media', publisherProperties);
+  session.publish(publisher);
 
-  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      // Not adding `{ audio: true }` since we only want video now
-      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-          video.src = window.URL.createObjectURL(stream);
-          video.play();
-      });
-  }
 /*  alert("called");
   constraints = { video: { facingMode: { exact: "environment" } } };
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
@@ -49,13 +46,19 @@ function reverseCamera()
 }
 
     var video = document.getElementById('video');
-
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
 
 
     apiKey = '45302582';
     sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
     token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9YTRiYmUwYjBkZjVjYTMyZmEwZmRjODY0MzhmMTMyYzM1ZmQ3MmEzODpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTNPVGd3T1RVeE16azFObjVOYzFaTVVGZDBRMG96WTFRMk1VOW9VbE5pYTNkT2NHcC1mZyZjcmVhdGVfdGltZT0xNDc5ODA5NTQ0Jm5vbmNlPTAuODgyNjQ2OTY5MDc0MDAyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDgyNDAxNTQz';
- var session = OT.initSession(apiKey, sessionId)
+  session = OT.initSession(apiKey, sessionId)
         .on('streamCreated', function(event) {
           session.subscribe(event.stream);
         })
@@ -63,9 +66,7 @@ function reverseCamera()
           //var publisher = OT.initPublisher();
           //session.unpublish(publisher);
         //  publisher.destroy();
-          var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
-          publisher = OT.initPublisher('local-media', publisherProperties);
-          session.publish(publisher);
+
           //publisher =void 0;
         //  session.publish(publisher);
         });
