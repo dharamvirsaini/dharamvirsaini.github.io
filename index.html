@@ -39,17 +39,13 @@ function reverseCamera()
 
     var video = document.getElementById('video');
 
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Not adding `{ audio: true }` since we only want video now
-    navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-    video.src = window.URL.createObjectURL(stream);
-    video.onloadedmetadata = function() {
-    canvas.height = video.videoHeight;
-    canvas.width = video.videoWidth;
-    video.play();
-  };
-});
-}
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            video.src = window.URL.createObjectURL(stream);
+            video.play();
+        });
+    }
 
 /*    apiKey = '45302582';
     sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
