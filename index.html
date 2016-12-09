@@ -8,9 +8,21 @@
     <script charset="utf-8">
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
+      devices.forEach(function(device) {
+        console.log(device.kind + ": " + device.label +
+                    " id = " + device.deviceId);
+      });
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
     devices = devices.filter(function(acc) {
     return acc.kind === "videoinput";
-  }, {})});
+  });
+});
     constraints = { video: { deviceId: devices[0].deviceId} };
 
 function reverseCamera()
