@@ -9,6 +9,7 @@
 
 var inputDevices;
 var mdeviceId = [];
+var publisher=null;
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
     inputDevices = devices.filter(function(acc) {
@@ -29,7 +30,7 @@ console.log("deviceID" + mdeviceId);
 
 function reverseCamera()
 {
-  constraints = { video: { deviceId: mdeviceId[1]} };
+  constraints = { video: { facingMode: { exact: "environment" } } };
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
   video.src = window.URL.createObjectURL(stream);
   video.onloadedmetadata = function() {
