@@ -6,34 +6,38 @@
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
     <script charset="utf-8">
-/*    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-      devices.forEach(function(device) {
-        console.log(device.kind + ": " + device.label +
-                    " id = " + device.deviceId);
-      });
-    })
-    .catch(function(err) {
-      console.log(err.name + ": " + err.message);
-    });
 
+var inputDevices;
+var mdeviceId = [];
     navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
-    devices = devices.filter(function(acc) {
+    inputDevices = devices.filter(function(acc) {
+
     return acc.kind === "videoinput";
   });
-});*/
-    constraints = { video: { deviceId: devices[0].deviceId} };
+  for (i = 0; i < inputDevices.length; i++) {
+
+  mdeviceId.push(inputDevices[i].deviceId);
+
+  //console.log("video input device: ", videoInputDevices[i].deviceId);
+
+  }
+
+});
+console.log(mdeviceId);
+    constraints = { video: { deviceId: mdeviceId[0]} };
 
 function reverseCamera()
 {
-  constraints = { video: { deviceId: devices[1].deviceId} };
+  constraints = { video: { deviceId: mdeviceId[1]} };
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
   video.src = window.URL.createObjectURL(stream);
   video.onloadedmetadata = function() {
   canvas.height = video.videoHeight;
   canvas.width = video.videoWidth;
   video.play();
+};
+});
 
 }
 
@@ -47,7 +51,7 @@ function reverseCamera()
         });
     }
 
-/*    apiKey = '45302582';
+    apiKey = '45302582';
     sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
     token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9YTRiYmUwYjBkZjVjYTMyZmEwZmRjODY0MzhmMTMyYzM1ZmQ3MmEzODpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTNPVGd3T1RVeE16azFObjVOYzFaTVVGZDBRMG96WTFRMk1VOW9VbE5pYTNkT2NHcC1mZyZjcmVhdGVfdGltZT0xNDc5ODA5NTQ0Jm5vbmNlPTAuODgyNjQ2OTY5MDc0MDAyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDgyNDAxNTQz';
  var session = OT.initSession(apiKey, sessionId)
@@ -57,7 +61,7 @@ function reverseCamera()
         .connect(token, function(error) {
           var publisher = OT.initPublisher();
           session.publish(publisher);
-        });*/
+        });
     </script>
   </body>
 </html>
