@@ -10,7 +10,7 @@
     .then(function(devices) {
     devices = devices.filter(function(acc) {
     return acc.kind === "videoinput";
-    }, {});
+  }, {})});
     constraints = { video: { deviceId: devices[0].deviceId} };
 
 function reverseCamera()
