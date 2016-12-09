@@ -30,27 +30,27 @@ console.log("deviceID" + mdeviceId);
 
 function reverseCamera()
 {
+
+  if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      // Not adding `{ audio: true }` since we only want video now
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+      });
+  }
+/*  alert("called");
   constraints = { video: { facingMode: { exact: "environment" } } };
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
   video.src = window.URL.createObjectURL(stream);
-  video.onloadedmetadata = function() {
-  canvas.height = video.videoHeight;
-  canvas.width = video.videoWidth;
   video.play();
-};
-});
+
+});*/
 
 }
 
     var video = document.getElementById('video');
 
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-        });
-    }
+
 
     apiKey = '45302582';
     sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
@@ -60,8 +60,14 @@ function reverseCamera()
           session.subscribe(event.stream);
         })
         .connect(token, function(error) {
-          var publisher = OT.initPublisher();
+          //var publisher = OT.initPublisher();
+          //session.unpublish(publisher);
+        //  publisher.destroy();
+          var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
+          publisher = OT.initPublisher('local-media', publisherProperties);
           session.publish(publisher);
+          //publisher =void 0;
+        //  session.publish(publisher);
         });
     </script>
   </body>
