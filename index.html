@@ -6,7 +6,7 @@
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
     <script charset="utf-8">
-    navigator.mediaDevices.enumerateDevices()
+/*    navigator.mediaDevices.enumerateDevices()
     .then(function(devices) {
       devices.forEach(function(device) {
         console.log(device.kind + ": " + device.label +
@@ -22,7 +22,7 @@
     devices = devices.filter(function(acc) {
     return acc.kind === "videoinput";
   });
-});
+});*/
     constraints = { video: { deviceId: devices[0].deviceId} };
 
 function reverseCamera()
