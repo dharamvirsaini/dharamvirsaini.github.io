@@ -31,7 +31,7 @@ console.log("deviceID" + mdeviceId);
 
 function reverseCamera()
 {
-  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[0]};
+  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
   publisher = OT.initPublisher('local-media', publisherProperties);
   session.publish(publisher);
 
