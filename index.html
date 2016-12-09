@@ -27,11 +27,11 @@ var session;
 
 });
 console.log("deviceID" + mdeviceId);
-    constraints = { video: { facingMode: { exact: "environment" } } };
+    constraints = { video: { deviceId: mdeviceId[0]} };
 
 function reverseCamera()
 {
-  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[0]};
+  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[1]};
   publisher = OT.initPublisher('local-media', publisherProperties);
   session.publish(publisher);
 
