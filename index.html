@@ -2,20 +2,42 @@
   <body>
     <video id="video" width="200" height="100" autoplay></video>
     <canvas id="canvas" width="200" height="100"></canvas>
+    <button type="button" onclick="reverseCamera()">Reverse Camera</button>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
     <script charset="utf-8">
+    navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+    devices = devices.filter(function(acc) {
+    return acc.kind === "videoinput";
+    }, {});
+    constraints = { video: { deviceId: devices[0].deviceId} };
+    
+function reverseCamera()
+{
+  constraints = { video: { deviceId: devices[1].deviceId} };
+  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+  video.src = window.URL.createObjectURL(stream);
+  video.onloadedmetadata = function() {
+  canvas.height = video.videoHeight;
+  canvas.width = video.videoWidth;
+  video.play();
+
+}
 
     var video = document.getElementById('video');
 
-    // Get access to the camera!
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-        });
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // Not adding `{ audio: true }` since we only want video now
+    navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
+    video.src = window.URL.createObjectURL(stream);
+    video.onloadedmetadata = function() {
+    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth;
+    video.play();
     }
+
+
       var apiKey = '45644842';
       var sessionId = '2_MX40NTY0NDg0Mn5-MTQ3MjgzMjg0MDA1Nn4yQi9ZVkNzOHc2azJVSElVODhPOTNLWmh-fg';
       var token = 'T1==cGFydG5lcl9pZD00NTY0NDg0MiZzaWc9NmFiMGYzMWQzMTBlYTVkMmRmNjYyNDUyZGUwZTBjNWU3OGJiNmY3NzpzZXNzaW9uX2lkPTJfTVg0ME5UWTBORGcwTW41LU1UUTNNamd6TWpnME1EQTFObjR5UWk5WlZrTnpPSGMyYXpKVlNFbFZPRGhQT1ROTFdtaC1mZyZjcmVhdGVfdGltZT0xNDcyODMyODg1Jm5vbmNlPTAuMjU2NDE3MTEwNTYyMzI0NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDczNDM3Njg1';
