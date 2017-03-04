@@ -1,75 +1,106 @@
-<html>
+
+  <html>
   <body>
-    <video id="video" width="200" height="100" autoplay></video>
-    <canvas id="canvas" width="200" height="100"></canvas>
-    <button type="button" onclick="reverseCamera()">Reverse Camera</button>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
-    <script charset="utf-8">
 
-var inputDevices;
-var mdeviceId = [];
-var publisher=null;
-var session;
-    navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-    inputDevices = devices.filter(function(acc) {
+    <div id="select-container">
+  </div>
+    <p id = "device_id"> </p>
+    <div id="camera-publisher"></div>
+    <script src="https://static.opentok.com/v2/js/opentok.js"></script>
+    <script type="text/javascript">
 
-    return acc.kind === "videoinput";
-  });
-  for (i = 0; i < inputDevices.length; i++) {
+      var apiKey = '';
+      var sessionId = '';
+      var token = '';
 
-  mdeviceId.push(inputDevices[i].deviceId);
+      var mdeviceId = [];
+      var publisher = null;
+      var audioInputDevices;
+      var videoInputDevices;
 
-  //console.log("video input device: ", videoInputDevices[i].deviceId);
+      var session = OT.initSession(apiKey, sessionId);
+
+      OT.getDevices(function(error, devices) {
+                    videoInputDevices = devices.filter(function(element) {
+                                                       return element.kind == "videoInput";
+                                                       });
+
+                    audioInputDevices = devices.filter(function(element) {
+                                                       return element.kind == "audioInput";
+                                                       });
+
+
+                    for (i = 0; i < videoInputDevices.length; i++) {
+
+                    console.log("video input device: ", videoInputDevices[i].deviceId);
+
+                    }
+
+                    addSelect("select-container", videoInputDevices.length);
+
+                    });
+
+
+      session.connect(token, function(error) {
+        if (error) {
+          alert('Error connecting to session: ' + error.message);
+          return;
+        }
+           });
+
+      session.on('streamCreated', function(event) {
+            });
+
+            function addSelect(divname, numDevices) {
+                var newDiv=document.createElement('div');
+                var html = '<select id = "select_camera">', i = 0;;
+                html += "<option value='"+0+"'>Select Camera</option>";
+                for(i = 1; i <= numDevices; i++) {
+
+                    html += "<option value='"+ i +"'>"+"Camera " + i +"</option>";
+                }
+                html += '</select>';
+                newDiv.innerHTML= html;
+                document.getElementById(divname).appendChild(newDiv);
+
+                document.getElementById("select_camera").addEventListener('change', onSelectChanged, false);
+              }
+
+  function onSelectChanged()
+  {
+    var index = document.getElementById("select_camera").selectedIndex;
+
+    if(index == 0)
+    {
+      session.unpublish(publisher);
+      publisher.destroy();
+    }
+
+    else {
+      if(publisher != null)
+      {
+          session.unpublish(publisher);
+          publisher.destroy();
+      }
+
+      var pubOptions =
+      {
+          audioSource: audioInputDevices[index - 1].deviceId,
+          videoSource: videoInputDevices[index - 1].deviceId
+      };
+
+      publisher = OT.initPublisher('camera-publisher', pubOptions, function(error) {
+                                       console.log("OT.initPublisher error: ", error);
+                                       });
+                                       // var publisher = OT.initPublisher('camera-publisher');
+                                       session.publish(publisher);
+    }
+
+      console.log(document.getElementById("select_camera").selectedIndex);
 
   }
 
-});
-console.log("deviceID" + mdeviceId);
-    constraints = { video: { deviceId: mdeviceId[0]} };
 
-function reverseCamera()
-{
-  var publisherProperties = {fitMode: 'contain', videoSource: mdeviceId[0]};
-  publisher = OT.initPublisher('local-media', publisherProperties);
-  session.publish(publisher);
-
-/*  alert("called");
-  constraints = { video: { facingMode: { exact: "environment" } } };
-  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-  video.src = window.URL.createObjectURL(stream);
-  video.play();
-
-});*/
-
-}
-
-    var video = document.getElementById('video');
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-        });
-    }
-
-
-    apiKey = '45302582';
-    sessionId = '1_MX40NTMwMjU4Mn5-MTQ3OTgwOTUxMzk1Nn5Nc1ZMUFd0Q0ozY1Q2MU9oUlNia3dOcGp-fg';
-    token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9YTRiYmUwYjBkZjVjYTMyZmEwZmRjODY0MzhmMTMyYzM1ZmQ3MmEzODpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTNPVGd3T1RVeE16azFObjVOYzFaTVVGZDBRMG96WTFRMk1VOW9VbE5pYTNkT2NHcC1mZyZjcmVhdGVfdGltZT0xNDc5ODA5NTQ0Jm5vbmNlPTAuODgyNjQ2OTY5MDc0MDAyNiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNDgyNDAxNTQz';
-  session = OT.initSession(apiKey, sessionId)
-        .on('streamCreated', function(event) {
-          session.subscribe(event.stream);
-        })
-        .connect(token, function(error) {
-          //var publisher = OT.initPublisher();
-          //session.unpublish(publisher);
-        //  publisher.destroy();
-
-          //publisher =void 0;
-        //  session.publish(publisher);
-        });
     </script>
   </body>
-</html>
+  </html>
