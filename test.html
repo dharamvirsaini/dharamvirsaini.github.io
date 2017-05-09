@@ -1,0 +1,31 @@
+<html>
+<body>
+    <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
+    <script charset="utf-8">
+      var apiKey = 'API_KEY';
+      var sessionId = 'SESSION_ID';
+      var token = 'TOKEN';
+      var session = OT.initSession(apiKey, sessionId)
+        .on('streamCreated', function(event) {
+          session.subscribe(event.stream);
+        })
+        .connect(token, function(error) {
+          var publisher = OT.initPublisher();
+          session.publish(publisher);
+        });
+    </script>
+  </body>
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+<style>
+  body {
+    font-family: Muli, Arial;
+  }
+  strong {
+    color: #09c;
+  }
+  .OT_publisher {
+    float:left;
+    margin-right: 5px;
+  }
+ </style>
+</html>
