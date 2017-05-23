@@ -1,10 +1,17 @@
 <html>
 <body>
     <script src="https://static.opentok.com/v2/js/opentok.js" charset="utf-8"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
     <script charset="utf-8">
+
       var apiKey = 'API_KEY';
       var sessionId = 'SESSION_ID';
       var token = 'TOKEN';
+
+
       var session = OT.initSession(apiKey, sessionId)
         .on('streamCreated', function(event) {
           session.subscribe(event.stream);
