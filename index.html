@@ -1,106 +1,140 @@
-
-  <html>
+<html>
+  <head></head>
   <body>
+    <div id='myPublisherDiv'></div>
+    <div id='subscribersDiv'></div>
+    <button onclick="setAudioVolume()">subscriber volume</button>
+    <script src='https://static.opentok.com/v2.12.0/js/opentok.min.js'></script>
+    <script>
 
-    <div id="select-container">
-  </div>
-    <p id = "device_id"> </p>
-    <div id="camera-publisher"></div>
-    <script src="https://static.opentok.com/v2/js/opentok.js"></script>
-    <script type="text/javascript">
 
-      var apiKey = '';
-      var sessionId = '';
-      var token = '';
+      var isAudioOn = true;
+      var publisher;
+      var apiKey = '45302582';
+      var sessionId = '2_MX40NTMwMjU4Mn5-MTUwNzY3NDQ0MzgzM35VQ1lLTXA1VVJJWDJwUXplejBnS1c3WVB-fg';
+//var token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9Mjk0ZWE5Y2IxOTFkYjk3ZTVhZTM1ODgxMjRhOWFjNmI4YmNlOTc1ZTpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTVOemt5TkRRNU1EZzBObjUzYTNCNFpVOWFNSFpPZGtWa01tSkliRkJTVUc5bWRtZC1mZyZjcmVhdGVfdGltZT0xNDk4MDUzNDkwJm5vbmNlPTAuOTI3MjcyMDM2NjEzNTI1NCZyb2xlPXN1YnNjcmliZXImZXhwaXJlX3RpbWU9MTUwMDY0NTQ4OQ=='
+      var token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9MTUwY2Q0OGIzMTY1Mzc2ZjI4ZDNmNDQxZDA2MGYwYzhjMmU2ODU3NTpzZXNzaW9uX2lkPTJfTVg0ME5UTXdNalU0TW41LU1UVXdOelkzTkRRME16Z3pNMzVWUTFsTFRYQTFWVkpKV0RKd1VYcGxlakJuUzFjM1dWQi1mZyZjcmVhdGVfdGltZT0xNTA3Njc0NDYwJm5vbmNlPTAuMzM1ODQ4Mzk0OTY4OTIzNyZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTEwMjY2NDYwJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9';
+      var pubOptions = {};
 
-      var mdeviceId = [];
-      var publisher = null;
-      var audioInputDevices;
-      var videoInputDevices;
+      var subscriber;
+
+// Replace replacementElementId with the ID of the DOM element to replace:
 
       var session = OT.initSession(apiKey, sessionId);
 
-      OT.getDevices(function(error, devices) {
-                    videoInputDevices = devices.filter(function(element) {
-                                                       return element.kind == "videoInput";
-                                                       });
+      var publisher = OT.initPublisher('myPublisherDiv', {
+    insertMode: 'append',
+    width: '100%',
+    height: '100%'
+  }, handleError);
 
-                    audioInputDevices = devices.filter(function(element) {
-                                                       return element.kind == "audioInput";
-                                                       });
-
-
-                    for (i = 0; i < videoInputDevices.length; i++) {
-
-                    console.log("video input device: ", videoInputDevices[i].deviceId);
-
-                    }
-
-                    addSelect("select-container", videoInputDevices.length);
-
-                    });
-
-
-      session.connect(token, function(error) {
-        if (error) {
-          alert('Error connecting to session: ' + error.message);
-          return;
-        }
-           });
-
-      session.on('streamCreated', function(event) {
-            });
-
-            function addSelect(divname, numDevices) {
-                var newDiv=document.createElement('div');
-                var html = '<select id = "select_camera">', i = 0;;
-                html += "<option value='"+0+"'>Select Camera</option>";
-                for(i = 1; i <= numDevices; i++) {
-
-                    html += "<option value='"+ i +"'>"+"Camera " + i +"</option>";
-                }
-                html += '</select>';
-                newDiv.innerHTML= html;
-                document.getElementById(divname).appendChild(newDiv);
-
-                document.getElementById("select_camera").addEventListener('change', onSelectChanged, false);
-              }
-
-  function onSelectChanged()
-  {
-    var index = document.getElementById("select_camera").selectedIndex;
-
-    if(index == 0)
-    {
-      session.unpublish(publisher);
-      publisher.destroy();
+  function handleError(error) {
+    if (error) {
+      alert(error.message);
     }
-
-    else {
-      if(publisher != null)
-      {
-          session.unpublish(publisher);
-          publisher.destroy();
-      }
-
-      var pubOptions =
-      {
-          audioSource: audioInputDevices[index - 1].deviceId,
-          videoSource: videoInputDevices[index - 1].deviceId
-      };
-
-      publisher = OT.initPublisher('camera-publisher', pubOptions, function(error) {
-                                       console.log("OT.initPublisher error: ", error);
-                                       });
-                                       // var publisher = OT.initPublisher('camera-publisher');
-                                       session.publish(publisher);
-    }
-
-      console.log(document.getElementById("select_camera").selectedIndex);
-
   }
 
+      session.on({
+          streamCreated: function(event) {
+            var options = {subscribeToAudio:false};
 
+          subscriber =  session.subscribe(event.stream, 'subscribersDiv', options);
+          }
+      });
+      session.connect(token, function(error) {
+        if (error) {
+          console.log(error.message);
+        } else {
+
+          session.publish(publisher, handleError);
+        }
+      });
+
+      var movingAvg = null;
+
+    /*  publisher.on('audioLevelUpdated111', function(event) {
+        if (movingAvg === null || movingAvg <= event.audioLevel) {
+          movingAvg = event.audioLevel;
+        } else {
+          movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+        }
+
+        // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+        var logLevel = (Math.log(movingAvg) / Math.LN10) / 1.5 + 1;
+        logLevel = Math.min(Math.max(logLevel, 0), 1);
+        console.log("publisher's audioLevelUpdated " + logLevel);
+      });
+*/
+
+session.on('connectionCreated', function(event) {
+  if (event) {
+        connectionObj = event.connection;
+
+       }
+});
+
+session.on('archiveStarted', function(event) {
+  console.log("archive started");
+});
+
+
+      session.on("signal", function(event) {
+            console.log("Signal received from connection " + event.type);
+            // Process the event.data property, if there is any data.
+          });
+
+      function audioToggle(){
+
+        session.signal(
+          {
+            to: connectionObj,
+            data:"hello",
+            type:"textMessage"
+          },
+          function(error) {
+            if (error) {
+              console.log("signal error ("
+                           + error.name
+                           + "): " + error.message);
+            } else {
+              console.log("signal sent.");
+            }
+          }
+        );
+
+      }
+
+      function setAudioVolume()
+      {
+        publisher = OT.initPublisher('myPublisherDiv', pubOptions);
+        session.publish(publisher, {width: 320, height: 240});
+        console.log("subscriber volume is " + subscriber.getAudioVolume());
+
+      //  subscriber.setAudioVolume(subscriber.getAudioVolume() - 10);
+
+          console.log("subscriber volume after change " + subscriber.getAudioVolume());
+      }
+
+      function screenshare() {
+      OT.checkScreenSharingCapability(function(response) {
+
+        alert("extensuon is " + response.extensionInstalled);
+
+        if (!response.supported || response.extensionRegistered === false) {
+          alert('This browser does not support screen sharing.');
+        } else if (response.extensionInstalled === false) {
+          alert('Please install the screen sharing extension and load your app over https.');
+        } else {
+          // Screen sharing is available. Publish the screen.
+          var screenSharingPublisher = OT.initPublisher('screen-preview', {videoSource: 'screen'});
+          session.publish(screenSharingPublisher, function(error) {
+            if (error) {
+              alert('Could not share the screen: ' + error.message);
+            }
+          });
+        }
+      });
+    }
     </script>
   </body>
-  </html>
+</html>
