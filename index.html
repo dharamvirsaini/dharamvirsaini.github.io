@@ -24,14 +24,14 @@
 
       var session = OT.initSession(apiKey, sessionId);
 
-     // publisher = OT.initPublisher('myPublisherDiv', pubOptions);
+      publisher = OT.initPublisher('myPublisherDiv', pubOptions);
 
       session.connect(token, function(error) {
         if (error) {
           console.log(error.message);
         } else {
 
-        //  session.publish(publisher, handleError);
+          session.publish(publisher, handleError);
           
         }
       });
