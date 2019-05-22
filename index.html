@@ -32,15 +32,16 @@
         } else {
 
           session.publish(publisher, handleError);
-        }
-      });
-
-      session.on({
+          session.on({
           streamCreated: function(event) {
           subscriber =  session.subscribe(event.stream, 'subscribersDiv');
 
           }
       });
+        }
+      });
+
+      
 
 
 
