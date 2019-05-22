@@ -31,17 +31,17 @@
           console.log(error.message);
         } else {
 
-          session.publish(publisher, handleError);
-          session.on({
+        //  session.publish(publisher, handleError);
+          
+        }
+      });
+
+      session.on({
           streamCreated: function(event) {
           subscriber =  session.subscribe(event.stream, 'subscribersDiv');
 
           }
       });
-        }
-      });
-
-      
 
 
 
