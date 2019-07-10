@@ -1,0 +1,101 @@
+<html>
+  <head></head>
+  <div id='myPublisherDiv'>
+    <div id='subscribersDiv'></div>
+
+</div>
+  <button id="switchCamera">Switch Camera
+  </button>
+
+
+    <script src='https://static.opentok.com/v2/js/opentok.min.js'></script>
+    <script>
+
+
+    var apiKey = '46269242';
+  var sessionId = '1_MX40NjI2OTI0Mn5-MTU2MTUyODUwNTU2Nn54Z1RleU56a1ZhamtkR0dpN2ViUy9yVFJ-fg';
+//var token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9Mjk0ZWE5Y2IxOTFkYjk3ZTVhZTM1ODgxMjRhOWFjNmI4YmNlOTc1ZTpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTVOemt5TkRRNU1EZzBObjUzYTNCNFpVOWFNSFpPZGtWa01tSkliRkJTVUc5bWRtZC1mZyZjcmVhdGVfdGltZT0xNDk4MDUzNDkwJm5vbmNlPTAuOTI3MjcyMDM2NjEzNTI1NCZyb2xlPXN1YnNjcmliZXImZXhwaXJlX3RpbWU9MTUwMDY0NTQ4OQ=='
+  var token = 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9MGNkMWRhNzkxNGYxMDAzOTM1YjAzNDA2ODVkMjk5ODNmZjQ0OGI4NjpzZXNzaW9uX2lkPTFfTVg0ME5qSTJPVEkwTW41LU1UVTJNVFV5T0RVd05UVTJObjU0WjFSbGVVNTZhMVpoYW10a1IwZHBOMlZpVXk5eVZGSi1mZyZjcmVhdGVfdGltZT0xNTYxNTI4NTI1Jm5vbmNlPTAuMjcwMjM0NDE2NDQ3ODU2OTUmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTU2NDEyMDUyNSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==';
+
+var deviceIdsList = [],
+   i = 0,
+   testDeviceId,
+   publisher;
+
+ //Get deviceIds
+ OT.getDevices(function(e, d) {
+   if (e) {
+     console.log(e);
+     return;
+   }
+
+   var deviceIds;
+   d.forEach(function(device) {
+     if (device.kind === "videoInput") {
+       deviceIdsList.push(device.deviceId);
+     }
+   });
+
+   testDeviceId = deviceIdsList[0];
+
+
+
+
+   document.getElementById("switchCamera").addEventListener('click', function () {
+     switchCamera();
+   });
+
+   var session = OT.initSession(apiKey, sessionId);
+   session.connect(token, function(error) {
+     if (error) {
+       console.log(error.message);
+     } else {
+       console.log("no error");
+       publishVideo();
+
+     }
+   });
+
+   session.on({
+       streamCreated: function(event) {
+       subscriber =  session.subscribe(event.stream, 'subscribersDiv');
+       console.log("name is " + event.stream.name);
+       }
+   });
+
+   function publishVideo() {
+     console.log("current deviceId: " + testDeviceId);
+     publisher = OT.initPublisher("myPublisherDiv", {
+       videoSource: testDeviceId,
+       insertMode: 'append'
+     }, function(error) {
+       if (error) {
+         console.log(error);
+       } else {
+         session.publish(publisher, function(error) {
+           if (!error) {
+             console.log("no error in publishing");
+           }
+         });
+         publisher.on("destroyed", function(event) {
+           console.log("publisher destroyed");
+           publisher = publishVideo();
+         });
+
+       }
+     });
+     return publisher;
+   }
+
+   function switchCamera() {
+     console.log("old deviceId: " + testDeviceId);
+     if (++i > deviceIdsList.length - 1) {
+       i = 0;
+     }
+     testDeviceId = deviceIdsList[i];
+     publisher.destroy();
+   }
+
+ });
+                                       </script>
+                                       </html>
