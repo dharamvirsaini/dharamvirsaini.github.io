@@ -49,6 +49,7 @@ function initializeSession() {
   publisher.on("videoElementCreated", (event) => {
 
     let m = event.element.captureStream();
+    document.getElementById('myPublisherDiv').appendChild(event.element);
     console.log(m)
     setTimeout(() =>{
       publisher.publishVideo(false);
