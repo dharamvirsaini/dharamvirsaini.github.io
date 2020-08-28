@@ -52,7 +52,7 @@ function initializeSession() {
     console.log(m)
     setTimeout(() =>{
       publisher.publishVideo(false);
-    }, 5000)
+    }, 10000)
     setTimeout(() =>{
       publisher.publishVideo(true);
     }, 20000)
