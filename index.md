@@ -28,6 +28,20 @@ var token = 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9MzkwOWEzZjgxZjQ3NjQ4Y2VjYjdjYTh
 
       publisher = OT.initPublisher('myPublisherDiv', pubOptions);
       
+      publisher.on("videoElementCreated", (event) => {
+
+    let m = event.element.captureStream();
+    console.log(m)
+    setTimeout(() =>{
+      publisher.publishVideo(false);
+    }, 5000)
+    setTimeout(() =>{
+      publisher.publishVideo(true);
+    }, 20000)
+
+  })
+      
+      
      // publisher.publishVideo(false);
 
       session.connect(token, function(error) {
