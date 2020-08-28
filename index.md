@@ -27,9 +27,7 @@ var token = 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9MzkwOWEzZjgxZjQ3NjQ4Y2VjYjdjYTh
       var session = OT.initSession(apiKey, sessionId);
 
       var publisherOptions = {
-    insertMode: 'append',
-    width: '100%',
-    height: '100%'
+    insertMode: 'append'
   };
    publisher = OT.initPublisher('publisher', publisherOptions, handleError);
       
