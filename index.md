@@ -40,9 +40,7 @@ function initializeSession() {
 
   // initialize the publisher
   var publisherOptions = {
-    insertMode: 'append',
-    width: '100%',
-    height: '100%'
+    insertMode: 'append'
   };
   var publisher = OT.initPublisher('publisher', publisherOptions, handleError);
 
