@@ -5,7 +5,7 @@
     <div id='subscribersDiv'></div>
 
 
-    <script src='https://static.opentok.com/v2.15/js/opentok.min.js'></script>
+    <script src='https://static.opentok.com/v2/js/opentok.min.js'></script>
     <script>
 var apiKey = '46269242';
 var sessionId = '2_MX40NjI2OTI0Mn5-MTU5ODU4NjQ1MjQwMX5wWEpweFZqRmdGTzFKbXdteDZNQ2RzYVd-fg';
@@ -46,8 +46,8 @@ function initializeSession() {
 
   publisher.on("videoElementCreated", (event) => {
 
-    let m = event.element.captureStream();
-    console.log(m)
+    //let m = event.element.captureStream();
+   // console.log(m)
     setTimeout(() =>{
       publisher.publishVideo(false);
     }, 10000)
