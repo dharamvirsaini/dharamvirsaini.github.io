@@ -38,7 +38,7 @@
           video.pause();
           alert(err.message);
         } else {
-          video.play();
+          //video.play();
         }
       });
       
