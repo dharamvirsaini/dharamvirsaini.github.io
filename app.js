@@ -29,7 +29,7 @@
       stream.removeEventListener('addtrack', publish);
       publisher = OT.initPublisher('publisher', {
         videoSource: null,
-        audioSource: null,
+        audioSource: audioTracks[0],
         fitMode: 'contain',
         width: 320,
         height: 240
