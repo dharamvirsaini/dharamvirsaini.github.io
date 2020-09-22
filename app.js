@@ -28,6 +28,7 @@
     if (!publisher && audioTracks.length > 0) {
       stream.removeEventListener('addtrack', publish);
       publisher = OT.initPublisher('publisher', {
+        videoSource: videoTracks[0],
         audioSource: audioTracks[0],
         fitMode: 'contain',
         width: 320,
