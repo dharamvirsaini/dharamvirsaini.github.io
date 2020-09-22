@@ -16,6 +16,11 @@
 
   var session = OT.initSession(apiKey, sessionId);
   
+  function handleError(error) {
+        if (error) {
+          alert(error.message);
+        }
+      }
   
   const publish = () => {
     const videoTracks = stream.getVideoTracks();
@@ -36,16 +41,8 @@
           video.play();
         }
       });
-      publisher.on('destroyed', () => {
-        video.pause();
-      });
-    }
-  };
-  stream.addEventListener('addtrack', publish);
-  publish();
-})();
-
-session.connect(token, function(error) {
+      
+      session.connect(token, function(error) {
         if (error) {
           console.log(error.message);
         } else {
@@ -55,8 +52,16 @@ session.connect(token, function(error) {
         }
       });
 
-function handleError(error) {
-        if (error) {
-          alert(error.message);
-        }
-      }
+
+
+      publisher.on('destroyed', () => {
+        video.pause();
+      });
+    }
+  };
+  stream.addEventListener('addtrack', publish);
+  publish();
+  
+  
+})();
+
