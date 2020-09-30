@@ -22,6 +22,12 @@
         }
       }
   
+  function playVideo() {
+      //  publisher = OT.initPublisher('myPublisherDiv', publishOptions);
+        //publisher.publishVideo(true);
+    video.play();
+      }
+  
   const publish = () => {
     const videoTracks = stream.getVideoTracks();
     const audioTracks = stream.getAudioTracks();
@@ -38,7 +44,7 @@
           video.pause();
           alert(err.message);
         } else {
-         video.play();
+        // video.play();
         }
       });
       
