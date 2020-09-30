@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8">
     <title>Publish from a Video Element</title>
-    <button onclick="publish()">Play Video</button>
+    <button onclick="playVideo()">Play Video</button>
 
     <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
     <style media="screen">
