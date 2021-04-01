@@ -26,9 +26,9 @@
     </style>
   </head>
   <body>
-    <div class="wrapper">
+     <div class="wrapper">
       <label>Video</label>
-      <video id="video" src="mp3_audio.mp3" width="320" height="240" controls></video>
+      <video id="video" src="video/BigBuckBunny_320x180.mp4" width="320" height="240" controls></video>
     </div>
     <div class="wrapper">
       <label>Publisher</label>
