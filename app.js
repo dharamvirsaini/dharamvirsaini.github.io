@@ -38,7 +38,7 @@
         if (error) {
           console.log(error.message);
         } else {
-          session.publish(publisher, handleError);
+          session.publish(publisher);
         }
       });
 
