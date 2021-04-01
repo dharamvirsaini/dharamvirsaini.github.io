@@ -49,6 +49,11 @@
       });
     }
   };
+  function handleError(error) {
+        if (error) {
+          alert(error.message);
+        }
+      }
   stream.addEventListener('addtrack', publish);
   publish();
 })();
