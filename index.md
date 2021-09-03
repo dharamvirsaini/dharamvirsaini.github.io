@@ -160,7 +160,7 @@
       }
       function unmuteAudio()
       {
-
+console.log("device id is ");
       publisher.cycleVideo().then((obj) => {
     console.log(obj.deviceId);
   });
