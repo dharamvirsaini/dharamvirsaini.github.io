@@ -164,17 +164,7 @@
         publisher.cycleVideo().then((obj) => {
   console.log("device id is " + publisher.getVideoSource().deviceId);
         
-        publisher.cycleVideo().then((obj) => {
-  if(obj.deviceId == frontDeviceId) {
-    console.log("front facing1 camera");
-    if (!publisher.element.classList.contains('OT_mirrored')) {
-      publisher.element.classList.add('OT_mirrored');
-    }
-  } else {
-   // publisher.element.classList.remove('OT_mirrored');
-  }
-});
-});
+       
           //publisher.destroy();
           // session.unpublish(publisher);
           // session.disconnect();
