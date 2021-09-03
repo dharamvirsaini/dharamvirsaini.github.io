@@ -166,7 +166,7 @@
         
         publisher.cycleVideo().then((obj) => {
   if(obj.deviceId == frontDeviceId) {
-    console.log("front facing camera");
+    console.log("front facing1 camera");
     if (!publisher.element.classList.contains('OT_mirrored')) {
       publisher.element.classList.add('OT_mirrored');
     }
