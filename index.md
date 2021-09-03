@@ -161,13 +161,19 @@
       function unmuteAudio()
       {
 
-        publisher.cycleVideo().then((obj) => {
+      publisher.cycleVideo();
+      /*  publisher.cycleVideo().then((obj) => {
   console.log("device id is " + publisher.getVideoSource().deviceId);
-        
-       
-          //publisher.destroy();
-          // session.unpublish(publisher);
-          // session.disconnect();
+  if(obj.deviceId == frontDeviceId) {
+    console.log("front facing1 camera");
+    if (!publisher.element.classList.contains('OT_mirrored')) {
+      publisher.element.classList.add('OT_mirrored');
+    }
+  } else {
+   // publisher.element.classList.remove('OT_mirrored');
+  }
+});*/
+
 
       }
                                        </script>
