@@ -171,7 +171,7 @@
       publisher.element.classList.add('OT_mirrored');
     }
   } else {
-    publisher.element.classList.remove('OT_mirrored');
+   // publisher.element.classList.remove('OT_mirrored');
   }
 });
 });
