@@ -161,7 +161,9 @@
       function unmuteAudio()
       {
 
-      publisher.cycleVideo();
+      publisher.cycleVideo().then(() => {
+    
+  });
 
 
       }
