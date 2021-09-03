@@ -161,20 +161,13 @@
       function unmuteAudio()
       {
 console.log("device2221 id is ");
-      publisher.cycleVideo().then((obj) => {
-    console.log(obj.deviceId);
-      
-       if(obj.deviceId == frontDeviceId) {
-    console.log("front facing1 camera");
-    if (!publisher.element.classList.contains('OT_mirrored')) {
-      publisher.element.classList.add('OT_mirrored');
-    }
-  } else {
-    publisher.element.classList.remove('OT_mirrored');
-  }
-
-      
+     publisher.cycleVideo().then((obj) => {
+  const constraints = { video: { deviceId: { exact: obj.deviceId } } }
+  navigator.mediaDevices.enumerateDevices(constraints).then((device) => {
+    console.log("facing mode is " + device.label);
+    // do something based on direction
   });
+});
 
 
       }
