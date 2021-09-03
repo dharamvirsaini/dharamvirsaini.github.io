@@ -161,8 +161,8 @@
       function unmuteAudio()
       {
 
-      publisher.cycleVideo().then(() => {
-    
+      publisher.cycleVideo().then((obj) => {
+    console.log(obj.deviceId);
   });
 
 
