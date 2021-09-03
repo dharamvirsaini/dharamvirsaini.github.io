@@ -162,7 +162,7 @@
         publisher.cycleVideo().then((obj) => {
   const constraints = { video: { deviceId: { exact: obj.deviceId } } }
   navigator.mediaDevices.enumerateDevices(constraints).then((device) => {
-    console.log("facing mode is " + device.label);
+    console.log("facing mode is " + JSON.stringify(device.label));
     // do something based on direction
   });
 });
