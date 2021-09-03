@@ -21,6 +21,7 @@
     //  pubOptions.videoSource = 'screen';
 
       var subscriber;
+      var frontDeviceId;
       var publisher;
       var stream;
 
@@ -131,6 +132,7 @@
       }
     } else {
       console.log("Connected");
+      frontDeviceId = publisher.getVideoSource().deviceId;
     }
   });
 
@@ -160,11 +162,18 @@
       {
 
         publisher.cycleVideo().then((obj) => {
-  const constraints = { video: { deviceId: { exact: obj.deviceId } } }
-  navigator.mediaDevices.enumerateDevices(constraints).then((device) => {
-    console.log("facing mode is " + device);
-    // do something based on direction
-  });
+  console.log("device id is " + publisher.getVideoSource().deviceId);
+        
+        publisher.cycleVideo().then((obj) => {
+  if(obj.deviceId == frontDeviceId) {
+    console.log("front facing camera");
+    if (!publisher.element.classList.contains('OT_mirrored')) {
+      publisher.element.classList.add('OT_mirrored');
+    }
+  } else {
+    publisher.element.classList.remove('OT_mirrored');
+  }
+});
 });
           //publisher.destroy();
           // session.unpublish(publisher);
