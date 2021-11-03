@@ -36,6 +36,7 @@ var apiKey = '47365881';
         } else {
 
           session.publish(publisher, handleError);
+          console.log("output devices" + OT.getAudioOutputDevices());
 
         }
       });
