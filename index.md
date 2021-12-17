@@ -38,7 +38,7 @@
           console.log(error.message);
         } else {
 
-          session.publish(publisher, handleError);
+         // session.publish(publisher, handleError);
           console.log("output devices" + OT.getAudioOutputDevices());
 
         }
