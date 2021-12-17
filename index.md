@@ -29,7 +29,7 @@
 
       var session = OT.initSession(apiKey, sessionId);
 
-     // publisher = OT.initPublisher('myPublisherDiv', pubOptions);
+      publisher = OT.initPublisher('myPublisherDiv', pubOptions);
       
      // publisher.publishVideo(false);
 
@@ -38,7 +38,7 @@
           console.log(error.message);
         } else {
 
-         // session.publish(publisher, handleError);
+          session.publish(publisher, handleError);
           console.log("output devices" + OT.getAudioOutputDevices());
 
         }
