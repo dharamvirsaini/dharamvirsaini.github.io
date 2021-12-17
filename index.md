@@ -18,7 +18,7 @@
 
 
 
-      var pubOptions = {publishAudio:true, publishVideo:true};
+      var pubOptions = {};
 
       var subscriber;
       var publisher;
