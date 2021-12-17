@@ -19,6 +19,7 @@
 
 
       var pubOptions = {};
+      pubOptions.disableAudioProcessing = 'true';
 
       var subscriber;
       var publisher;
