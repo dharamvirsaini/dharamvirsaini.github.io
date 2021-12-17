@@ -29,7 +29,7 @@
 
       var session = OT.initSession(apiKey, sessionId);
 
-      publisher = OT.initPublisher('myPublisherDiv', pubOptions);
+     // publisher = OT.initPublisher('myPublisherDiv', pubOptions);
       
      // publisher.publishVideo(false);
 
