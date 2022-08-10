@@ -13,9 +13,10 @@
 
 //OT.setLogLevel(OT.NONE);
       var publisher;
-      var apiKey = '46269242';
+         var apiKey = '46269242';
       var sessionId = '1_MX40NjI2OTI0Mn5-MTY1NjU5NDczNzE3N35rRmlzTHlNckYxcjhLU3dtcDg1WXhHZVl-fg'; // add your OpenTok Session ID
-      var token= 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9MDc3ODhhNWQzM2U1MjEyYjg2YWUxZGJmYjMzODRhYjY1N2RkZDgxYzpzZXNzaW9uX2lkPTFfTVg0ME5qSTJPVEkwTW41LU1UWTFOalU1TkRjek56RTNOMzVyUm1selRIbE5ja1l4Y2poTFUzZHRjRGcxV1hoSFpWbC1mZyZjcmVhdGVfdGltZT0xNjU2NTk0NzUyJm5vbmNlPTAuODAzOTQwMjgyODU0NjI3NiZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNjU5MTg2NzUxJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9'; // add your OpenTok token
+      var token= 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9YzkzNjgzMGE0Mzg3Njc4NDQyYTgwZWZjMjI1MTk5NWQ4OTE0YWZjYjpzZXNzaW9uX2lkPTFfTVg0ME5qSTJPVEkwTW41LU1UWTFOalU1TkRjek56RTNOMzVyUm1selRIbE5ja1l4Y2poTFUzZHRjRGcxV1hoSFpWbC1mZyZjcmVhdGVfdGltZT0xNjYwMDU3NzUzJm5vbmNlPTAuNjExNDYwNTQxNTAyNzQ0MSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNjYyNjQ5NzUyJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9'; // add your OpenTok token
+
 
 
       var pubOptions = {resolution: "1920x1080"};
@@ -169,7 +170,7 @@
       // function startPublishing()
       // {
 
-        publisher = OT.initPublisher('myPublisherDiv', pubOptions, function (error) {
+        publisher = OT.initPublisher('myPublisherDiv', {videoSource: 'screen'}, function (error) {
     if (error) {
     //  console.log("Failed to publish: ", error.code + "----" + error.name + "------" + error.message);
       if (error.name === "OT_NOT_CONNECTED") {
