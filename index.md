@@ -2,7 +2,7 @@
   <head></head>
   <body>
     <div id='myPublisherDiv'></div>
-    <div id='subscribersDiv' style="width: 100vw; height: 100vh;"></div>
+    <div id='subscribersDiv' style="width: '100vw'; height: '100vh';"></div>
 
 
 
