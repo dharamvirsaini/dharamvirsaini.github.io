@@ -2,7 +2,7 @@
   <head></head>
   <body>
     <div id='myPublisherDiv'></div>
-    <div id='subscribersDiv' style="width: '100vw'; height: '100vh';"></div>
+    <div id='subscribersDiv';"></div>
 
 
 
@@ -47,7 +47,10 @@ var token = 'T1==cGFydG5lcl9pZD00Nzc2MzkzMSZzaWc9ZmE5MjUwOWM0YTUwMTQwNTk5ZGE5NWI
 
       session.on({
           streamCreated: function(event) {
-          subscriber =  session.subscribe(event.stream, 'subscribersDiv');
+
+          const options = {width: 1920, height: 1080, insertMode: 'append'}
+const subscriber = session.subscribe(event.stream, 'subscribersDiv', options);
+         // subscriber =  session.subscribe(event.stream, 'subscribersDiv');
           }
       });
 
