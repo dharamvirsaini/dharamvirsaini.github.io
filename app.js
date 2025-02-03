@@ -11,32 +11,39 @@ function handleError(error) {
 
   
 }
-
-var audioInputDevices;
-var videoInputDevices;
-
-
-  
-
 function initializeSession() {
   const session = OT.initSession(apiKey, sessionId);
 
-  OT.getDevices(function(error, devices) {
-    audioInputDevices = devices.filter(function(element) {
-      return element.kind == "audioInput";
-    });
-    videoInputDevices = devices.filter(function(element) {
-      return element.kind == "videoInput";
-    });
-    for (var i = 0; i < audioInputDevices.length; i++) {
-      console.log("audio input device: ", audioInputDevices[i].deviceId);
+  OT.getDevices(function (error, devices) {
+    if (error) {
+      handleError(error);
+      return;
     }
-    for (i = 0; i < videoInputDevices.length; i++) {
-      console.log("video input device: ", videoInputDevices[i].deviceId);
-    }
+
+    const audioInputDevices = devices.filter(device => device.kind === "audioInput");
+    const videoInputDevices = devices.filter(device => device.kind === "videoInput");
+
+    audioInputDevices.forEach(device => console.log("audio input device: ", device.deviceId));
+    videoInputDevices.forEach(device => console.log("video input device: ", device.deviceId));
+
+    // Initialize the publisher only after devices are fetched
+    const publisherOptions = {
+      audioSource: audioInputDevices.length > 0 ? audioInputDevices[0].deviceId : null,
+      insertMode: 'append',
+      width: '100%',
+      height: '100%'
+    };
+    const publisher = OT.initPublisher('publisher', publisherOptions, handleError);
+
+    // Connect to the session
+    session.connect(token, (error) => {
+      if (error) {
+        handleError(error);
+      } else {
+        session.publish(publisher, handleError);
+      }
+    });
   });
-
-
 
   // Subscribe to a newly created stream
   session.on('streamCreated', (event) => {
@@ -51,25 +58,6 @@ function initializeSession() {
   session.on('sessionDisconnected', (event) => {
     console.log('You were disconnected from the session.', event.reason);
   });
-
-  // initialize the publisher
-  const publisherOptions = {
-    audioSource: audioInputDevices[0].deviceId,
-    insertMode: 'append',
-    width: '100%',
-    height: '100%'
-  };
-  const publisher = OT.initPublisher('publisher', publisherOptions, handleError);
-
-  // Connect to the session
-  session.connect(token, (error) => {
-    if (error) {
-      handleError(error);
-    } else {
-      // If the connection is successful, publish the publisher to the session
-      session.publish(publisher, handleError);
-    }
-  });
 }
 
 // See the config.js file.
@@ -79,17 +67,17 @@ if (API_KEY && TOKEN && SESSION_ID) {
   token = TOKEN;
   initializeSession();
 } else if (SAMPLE_SERVER_BASE_URL) {
-  // Make a GET request to get the OpenTok API key, session ID, and token from the server
   fetch(SAMPLE_SERVER_BASE_URL + '/session')
-  .then((response) => response.json())
-  .then((json) => {
-    apiKey = json.apiKey;
-    sessionId = json.sessionId;
-    token = json.token;
-    // Initialize an OpenTok Session object
-    initializeSession();
-  }).catch((error) => {
-    handleError(error);
-    alert('Failed to get opentok sessionId and token. Make sure you have updated the config.js file.');
-  });
+    .then(response => response.json())
+    .then(json => {
+      apiKey = json.apiKey;
+      sessionId = json.sessionId;
+      token = json.token;
+      initializeSession();
+    })
+    .catch(error => {
+      handleError(error);
+      alert('Failed to get OpenTok sessionId and token. Make sure you have updated the config.js file.');
+    });
 }
+
