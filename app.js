@@ -1,59 +1,93 @@
-/* global OT */
+/* global OT API_KEY TOKEN SESSION_ID SAMPLE_SERVER_BASE_URL */
 
-(function closure() {
-  const video = document.querySelector('#video');
-  if (!video.captureStream) {
-    alert('This browser does not support VideoElement.captureStream(). You must use Google Chrome.');
-    return;
+let apiKey;
+let sessionId;
+let token;
+
+function handleError(error) {
+  if (error) {
+    console.error(error);
   }
-  const stream = video.captureStream();
-  
-  var apiKey = '46269242';
-  var sessionId = '1_MX40NjI2OTI0Mn5-MTYxMjg3NzUxOTM5OX5hckl3dTRJZ2JXQ0R0a2xZQnBURmpnS1d-fg';
-  //var token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9Mjk0ZWE5Y2IxOTFkYjk3ZTVhZTM1ODgxMjRhOWFjNmI4YmNlOTc1ZTpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTVOemt5TkRRNU1EZzBObjUzYTNCNFpVOWFNSFpPZGtWa01tSkliRkJTVUc5bWRtZC1mZyZjcmVhdGVfdGltZT0xNDk4MDUzNDkwJm5vbmNlPTAuOTI3MjcyMDM2NjEzNTI1NCZyb2xlPXN1YnNjcmliZXImZXhwaXJlX3RpbWU9MTUwMDY0NTQ4OQ=='
-  var token = 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9NmRkYmNhNjYzYWUzOWQ1ZjUxMDA3M2NjZTRhN2RjOWUzNWM5ZmRhMzpzZXNzaW9uX2lkPTFfTVg0ME5qSTJPVEkwTW41LU1UWXhNamczTnpVeE9UTTVPWDVoY2tsM2RUUkpaMkpYUTBSMGEyeFpRbkJVUm1wblMxZC1mZyZjcmVhdGVfdGltZT0xNjE3MjgwMjEzJm5vbmNlPTAuNjUzMjEyODc3NTQ4NjA5NSZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNjE5ODcyMjEyJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9';
 
-  
-  let publisher;
-  var session = OT.initSession(apiKey, sessionId);
-  
-  const publish = () => {
-    const videoTracks = stream.getVideoTracks();
-    const audioTracks = stream.getAudioTracks();
-    if (!publisher && videoTracks.length > 0 && audioTracks.length > 0) {
-      stream.removeEventListener('addtrack', publish);
-      publisher = OT.initPublisher('publisher', {
-        videoSource: videoTracks[0],
-        audioSource: audioTracks[0],
-        fitMode: 'contain',
-        width: 320,
-        height: 240
-      }, (err) => {
-        if (err) {
-          video.pause();
-          alert(err.message);
-        } else {
-          video.play();
-          session.connect(token, function(error) {
-        if (error) {
-          console.log(error.message);
-        } else {
-          session.publish(publisher);
-        }
-      });
-
-        }
-      });
-      publisher.on('destroyed', () => {
-        video.pause();
-      });
+  OT.getDevices(function(error, devices) {
+    audioInputDevices = devices.filter(function(element) {
+      return element.kind == "audioInput";
+    });
+    videoInputDevices = devices.filter(function(element) {
+      return element.kind == "videoInput";
+    });
+    for (var i = 0; i < audioInputDevices.length; i++) {
+      console.log("audio input device: ", audioInputDevices[i].deviceId);
     }
+    for (i = 0; i < videoInputDevices.length; i++) {
+      console.log("video input device: ", videoInputDevices[i].deviceId);
+    }
+  });
+  
+}
+
+var audioInputDevices;
+var videoInputDevices;
+
+
+
+function initializeSession() {
+  const session = OT.initSession(apiKey, sessionId);
+
+
+
+  // Subscribe to a newly created stream
+  session.on('streamCreated', (event) => {
+    const subscriberOptions = {
+      insertMode: 'append',
+      width: '100%',
+      height: '100%'
+    };
+    session.subscribe(event.stream, 'subscriber', subscriberOptions, handleError);
+  });
+
+  session.on('sessionDisconnected', (event) => {
+    console.log('You were disconnected from the session.', event.reason);
+  });
+
+  // initialize the publisher
+  const publisherOptions = {
+  //  audioSource: audioInputDevices[0].deviceId,
+    insertMode: 'append',
+    width: '100%',
+    height: '100%'
   };
-  function handleError(error) {
-        if (error) {
-          alert(error.message);
-        }
-      }
-  stream.addEventListener('addtrack', publish);
-  publish();
-})();
+  const publisher = OT.initPublisher('publisher', publisherOptions, handleError);
+
+  // Connect to the session
+  session.connect(token, (error) => {
+    if (error) {
+      handleError(error);
+    } else {
+      // If the connection is successful, publish the publisher to the session
+      session.publish(publisher, handleError);
+    }
+  });
+}
+
+// See the config.js file.
+if (API_KEY && TOKEN && SESSION_ID) {
+  apiKey = API_KEY;
+  sessionId = SESSION_ID;
+  token = TOKEN;
+  initializeSession();
+} else if (SAMPLE_SERVER_BASE_URL) {
+  // Make a GET request to get the OpenTok API key, session ID, and token from the server
+  fetch(SAMPLE_SERVER_BASE_URL + '/session')
+  .then((response) => response.json())
+  .then((json) => {
+    apiKey = json.apiKey;
+    sessionId = json.sessionId;
+    token = json.token;
+    // Initialize an OpenTok Session object
+    initializeSession();
+  }).catch((error) => {
+    handleError(error);
+    alert('Failed to get opentok sessionId and token. Make sure you have updated the config.js file.');
+  });
+}
