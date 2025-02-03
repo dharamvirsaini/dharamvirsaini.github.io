@@ -9,6 +9,18 @@ function handleError(error) {
     console.error(error);
   }
 
+  
+}
+
+var audioInputDevices;
+var videoInputDevices;
+
+
+  
+
+function initializeSession() {
+  const session = OT.initSession(apiKey, sessionId);
+
   OT.getDevices(function(error, devices) {
     audioInputDevices = devices.filter(function(element) {
       return element.kind == "audioInput";
@@ -23,16 +35,6 @@ function handleError(error) {
       console.log("video input device: ", videoInputDevices[i].deviceId);
     }
   });
-  
-}
-
-var audioInputDevices;
-var videoInputDevices;
-
-
-
-function initializeSession() {
-  const session = OT.initSession(apiKey, sessionId);
 
 
 
