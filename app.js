@@ -28,7 +28,7 @@ function initializeSession() {
 
     // Initialize the publisher only after devices are fetched
     const publisherOptions = {
-      audioSource: asdgsdaf4364565,
+      audioSource: 'asdgsdaf4364565',
       insertMode: 'append',
       width: '100%',
       height: '100%'
