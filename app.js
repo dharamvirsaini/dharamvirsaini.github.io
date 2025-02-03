@@ -52,7 +52,7 @@ function initializeSession() {
 
   // initialize the publisher
   const publisherOptions = {
-  //  audioSource: audioInputDevices[0].deviceId,
+    audioSource: audioInputDevices[0].deviceId,
     insertMode: 'append',
     width: '100%',
     height: '100%'
