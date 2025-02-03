@@ -28,7 +28,7 @@ function initializeSession() {
 
     // Initialize the publisher only after devices are fetched
     const publisherOptions = {
-      audioSource: audioInputDevices.length > 0 ? audioInputDevices[0].deviceId : null,
+      audioSource: '050283a2-3eb3-4405-8808-a80252ead373',
       insertMode: 'append',
       width: '100%',
       height: '100%'
