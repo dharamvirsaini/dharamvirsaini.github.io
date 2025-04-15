@@ -10,7 +10,7 @@
 var apiKey = '46269242';
 var sessionId = '2_MX40NjI2OTI0Mn5-MTc0Mzc0Njk3MTI5OH5mOHZSVW5LM3hDVGpySys0NjF1QzBUWVV-fn4';
 //var token = 'T1==cGFydG5lcl9pZD00NTMwMjU4MiZzaWc9Mjk0ZWE5Y2IxOTFkYjk3ZTVhZTM1ODgxMjRhOWFjNmI4YmNlOTc1ZTpzZXNzaW9uX2lkPTFfTVg0ME5UTXdNalU0TW41LU1UUTVOemt5TkRRNU1EZzBObjUzYTNCNFpVOWFNSFpPZGtWa01tSkliRkJTVUc5bWRtZC1mZyZjcmVhdGVfdGltZT0xNDk4MDUzNDkwJm5vbmNlPTAuOTI3MjcyMDM2NjEzNTI1NCZyb2xlPXN1YnNjcmliZXImZXhwaXJlX3RpbWU9MTUwMDY0NTQ4OQ=='
-var token = 'T1==cGFydG5lcl9pZD00NjI2OTI0MiZzaWc9Mjc0MDQ0ZmNmZDVkYjJkZjBmMTI1NGQwMDdhZDJkYjI1ZmY0M2M4MzpzZXNzaW9uX2lkPTJfTVg0ME5qSTJPVEkwTW41LU1UYzBNemMwTmprM01USTVPSDVtT0haU1ZXNUxNM2hEVkdweVN5czBOakYxUXpCVVdWVi1mbjQmY3JlYXRlX3RpbWU9MTc0Mzc0NzAwNyZub25jZT0wLjExMTE3MzM2MzI2MjcxMTQzJnJvbGU9bW9kZXJhdG9yJmV4cGlyZV90aW1lPTE3NDYzMzkwMDYzNjMmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=';
+var token = 'T1==cGFydG5lcl9pZD00Nzc2MzkzMSZzaWc9ZTQ1NGNiMjE0MDMyYzlkMGU0NTNjMDQyYmNlZjdmMmEyMWNjODA1YjpzZXNzaW9uX2lkPTJfTVg0ME56YzJNemt6TVg1LU1UYzBORGN4TXpjM056azBNbjVMT1haS1VUVm1Ua1phUnpWT2QydDRjQzlqTWs0cmFtdC1mbjQmY3JlYXRlX3RpbWU9MTc0NDcxNDYxMiZub25jZT0wLjM2NDk2NTYzNDkwNjA5NDU3JnJvbGU9cHVibGlzaGVyJmV4cGlyZV90aW1lPTE3NDczMDY2MDkmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=';
 
 
 initializeSession();
@@ -22,7 +22,15 @@ initializeSession();
 }
 
 function initializeSession() {
-  var session = OT.initSession(apiKey, sessionId);
+ // var session = OT.initSession(apiKey, sessionId);
+
+ const session = OT.initSession(
+  '47763931',
+  '2_MX40Nzc2MzkzMX5-MTc0NDcxMzc3Nzk0Mn5LOXZKUTVmTkZaRzVOd2t4cC9jMk4ramt-fn4',
+  {
+    encryptionSecret: 'initialEncryptionSecret'
+  }
+);
 
   // Subscribe to a newly created stream
   session.on('streamCreated', function streamCreated(event) {
